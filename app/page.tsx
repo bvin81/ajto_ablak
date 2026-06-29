@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, CheckCircle2, Star, Ruler, Shield, ChevronLeft, ChevronRight } from "lucide-react";
 import { useLang } from "@/lib/LanguageContext";
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 
 const ALL_PRODUCTS = [
   { image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=380&fit=crop", nameRo: "Ferestre PVC", nameHu: "PVC ablakok", href: "/produse" },
@@ -26,89 +26,66 @@ const GALLERY_IMAGES = [
 const USP_ICONS = [CheckCircle2, Shield, Star, Ruler];
 
 function ProductCarousel({ lang }: { lang: string }) {
-  const [current, setCurrent] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
-  // How many cards visible depends on screen — we handle this via CSS, track by index
-  const total = ALL_PRODUCTS.length;
-
-  const next = () => setCurrent((c) => (c + 1) % total);
-  const prev = () => setCurrent((c) => (c - 1 + total) % total);
-
-  // Auto-advance every 4s
-  useEffect(() => {
-    timerRef.current = setTimeout(next, 4000);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [current]);
-
-  // Visible indices: show 4 on lg, 2 on sm, 1 on xs — we render all and use CSS translate
-  const getTranslate = () => `translateX(calc(-${current} * (100% / 4)))`;
+  const scroll = (dir: "prev" | "next") => {
+    if (!trackRef.current) return;
+    const card = trackRef.current.querySelector("[data-card]") as HTMLElement;
+    const amount = card ? card.offsetWidth + 16 : 280;
+    trackRef.current.scrollBy({ left: dir === "next" ? amount : -amount, behavior: "smooth" });
+  };
 
   return (
     <div className="relative">
-      {/* Track */}
-      <div className="overflow-hidden">
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: getTranslate() }}
-        >
-          {ALL_PRODUCTS.map((p, i) => (
-            <div
-              key={i}
-              className="shrink-0 px-3"
-              style={{ width: "calc(100% / 4)" }}
-            >
-              <Link
-                href={p.href}
-                className="block group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 overflow-hidden"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={p.image}
-                    alt={lang === "ro" ? p.nameRo : p.nameHu}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    unoptimized
-                  />
-                </div>
-                <div className="p-4 flex items-center justify-between">
-                  <h3 className="font-semibold text-gray-900 text-sm">{lang === "ro" ? p.nameRo : p.nameHu}</h3>
-                  <ArrowRight size={14} style={{ color: "var(--clr-accent)" }} className="shrink-0 ml-2" />
-                </div>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Arrows */}
+      {/* Desktop arrows */}
       <button
-        onClick={prev}
-        className="absolute -left-4 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-md border border-gray-100 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors z-10"
+        onClick={() => scroll("prev")}
+        className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-md border border-gray-100 items-center justify-center text-gray-600 hover:text-gray-900 transition-colors z-10"
       >
         <ChevronLeft size={18} />
       </button>
       <button
-        onClick={next}
-        className="absolute -right-4 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-md border border-gray-100 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors z-10"
+        onClick={() => scroll("next")}
+        className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-md border border-gray-100 items-center justify-center text-gray-600 hover:text-gray-900 transition-colors z-10"
       >
         <ChevronRight size={18} />
       </button>
 
-      {/* Dots */}
-      <div className="flex justify-center gap-1.5 mt-5">
-        {ALL_PRODUCTS.map((_, i) => (
-          <button
+      {/* Scroll track */}
+      <div
+        ref={trackRef}
+        className="flex gap-4 overflow-x-auto pb-3"
+        style={{ scrollSnapType: "x mandatory", scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {ALL_PRODUCTS.map((p, i) => (
+          <Link
             key={i}
-            onClick={() => setCurrent(i)}
-            className="w-2 h-2 rounded-full transition-all duration-200"
-            style={{
-              background: i === current ? "var(--clr-accent)" : "#d1d5db",
-              transform: i === current ? "scale(1.3)" : "scale(1)",
-            }}
-          />
+            data-card
+            href={p.href}
+            className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden shrink-0 flex flex-col"
+            style={{ scrollSnapAlign: "start", width: "clamp(220px, 72vw, 280px)" }}
+          >
+            <div className="relative overflow-hidden" style={{ height: 180 }}>
+              <Image
+                src={p.image}
+                alt={lang === "ro" ? p.nameRo : p.nameHu}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                unoptimized
+              />
+            </div>
+            <div className="p-4 flex items-center justify-between flex-1">
+              <h3 className="font-semibold text-gray-900 text-sm leading-snug">{lang === "ro" ? p.nameRo : p.nameHu}</h3>
+              <ArrowRight size={14} style={{ color: "var(--clr-accent)" }} className="shrink-0 ml-3" />
+            </div>
+          </Link>
         ))}
       </div>
+
+      {/* Mobile hint */}
+      <p className="md:hidden text-center text-xs text-gray-400 mt-2">
+        {lang === "ro" ? "← Glisați pentru mai multe →" : "← Húzzon a további termékekért →"}
+      </p>
     </div>
   );
 }
