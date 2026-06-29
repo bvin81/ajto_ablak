@@ -22,11 +22,6 @@ const galleryItems = [
   { src: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&h=500&fit=crop", category: "complex" as GalleryCategory },
 ];
 
-const CATEGORY_ICON: Record<Exclude<GalleryCategory, "all">, string> = {
-  windows: "🪟",
-  doors: "🚪",
-  complex: "🏠",
-};
 
 export default function ReferintePage() {
   const { tr } = useLang();
@@ -102,10 +97,9 @@ export default function ReferintePage() {
 
               {/* Category badge — top left */}
               <div
-                className="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-sm"
+                className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-sm"
                 style={{ background: "var(--clr-accent)", opacity: 0.92 }}
               >
-                <span>{CATEGORY_ICON[item.category as Exclude<GalleryCategory, "all">]}</span>
                 {categoryLabel(item.category as Exclude<GalleryCategory, "all">)}
               </div>
 
@@ -140,7 +134,6 @@ export default function ReferintePage() {
             />
             {/* Caption in lightbox */}
             <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white text-sm backdrop-blur-sm">
-              <span>{CATEGORY_ICON[filtered[lightbox].category as Exclude<GalleryCategory, "all">]}</span>
               {categoryLabel(filtered[lightbox].category as Exclude<GalleryCategory, "all">)}
               <span className="text-white/40 ml-2">{lightbox + 1} / {filtered.length}</span>
             </div>
