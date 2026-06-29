@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import CookieBanner from "@/components/CookieBanner";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <main className="flex-1 pt-16">{children}</main>
             <Footer />
             <ThemeSwitcher />
+            <WhatsAppButton />
             <CookieBanner />
           </LanguageProvider>
         </ThemeProvider>

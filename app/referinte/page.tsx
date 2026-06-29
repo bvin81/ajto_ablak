@@ -22,12 +22,27 @@ const galleryItems = [
   { src: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&h=500&fit=crop", category: "complex" as GalleryCategory },
 ];
 
+const CATEGORY_ICON: Record<Exclude<GalleryCategory, "all">, string> = {
+  windows: "🪟",
+  doors: "🚪",
+  complex: "🏠",
+};
+
 export default function ReferintePage() {
   const { tr } = useLang();
   const [filter, setFilter] = useState<GalleryCategory>("all");
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   const filtered = filter === "all" ? galleryItems : galleryItems.filter((g) => g.category === filter);
+
+  const categoryLabel = (cat: Exclude<GalleryCategory, "all">) => {
+    const map: Record<Exclude<GalleryCategory, "all">, string> = {
+      windows: tr.gallery_page.filter_windows,
+      doors: tr.gallery_page.filter_doors,
+      complex: tr.gallery_page.filter_complex,
+    };
+    return map[cat];
+  };
 
   const filters = [
     { key: "all" as GalleryCategory, label: tr.gallery_page.filter_all },
@@ -66,18 +81,46 @@ export default function ReferintePage() {
           ))}
         </div>
 
+        {/* Masonry grid */}
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
           {filtered.map((item, i) => (
-            <div key={i} className="break-inside-avoid relative overflow-hidden rounded-2xl cursor-pointer group" onClick={() => setLightbox(i)}>
-              <Image src={item.src} alt={`Reference ${i + 1}`} width={600} height={450} className="w-full object-cover group-hover:scale-105 transition-transform duration-300" unoptimized />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-200 flex items-center justify-center">
-                <span className="text-white text-2xl font-light opacity-0 group-hover:opacity-100 transition-opacity">+</span>
+            <div
+              key={i}
+              className="break-inside-avoid relative overflow-hidden rounded-2xl cursor-pointer group"
+              onClick={() => setLightbox(i)}
+            >
+              <Image
+                src={item.src}
+                alt={categoryLabel(item.category as Exclude<GalleryCategory, "all">)}
+                width={600}
+                height={450}
+                className="w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                unoptimized
+              />
+              {/* Dark gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+              {/* Category badge — top left */}
+              <div
+                className="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-sm"
+                style={{ background: "var(--clr-accent)", opacity: 0.92 }}
+              >
+                <span>{CATEGORY_ICON[item.category as Exclude<GalleryCategory, "all">]}</span>
+                {categoryLabel(item.category as Exclude<GalleryCategory, "all">)}
+              </div>
+
+              {/* Zoom hint — center on hover */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-xl">
+                  +
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
+      {/* Lightbox */}
       {lightbox !== null && (
         <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center" onClick={() => setLightbox(null)}>
           <button className="absolute top-4 right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20" onClick={() => setLightbox(null)}>
@@ -86,8 +129,21 @@ export default function ReferintePage() {
           <button className="absolute left-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20" onClick={(e) => { e.stopPropagation(); prev(); }}>
             <ChevronLeft size={22} />
           </button>
-          <div className="relative max-w-4xl max-h-[85vh] mx-12" onClick={(e) => e.stopPropagation()}>
-            <Image src={filtered[lightbox].src.replace(/w=600/, "w=1200").replace(/h=\d+/, "h=800")} alt="Gallery" width={1200} height={800} className="object-contain max-h-[85vh] rounded-xl" unoptimized />
+          <div className="relative max-w-4xl max-h-[85vh] mx-12 flex flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>
+            <Image
+              src={filtered[lightbox].src.replace(/w=600/, "w=1200").replace(/h=\d+/, "h=800")}
+              alt="Gallery"
+              width={1200}
+              height={800}
+              className="object-contain max-h-[78vh] rounded-xl"
+              unoptimized
+            />
+            {/* Caption in lightbox */}
+            <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white text-sm backdrop-blur-sm">
+              <span>{CATEGORY_ICON[filtered[lightbox].category as Exclude<GalleryCategory, "all">]}</span>
+              {categoryLabel(filtered[lightbox].category as Exclude<GalleryCategory, "all">)}
+              <span className="text-white/40 ml-2">{lightbox + 1} / {filtered.length}</span>
+            </div>
           </div>
           <button className="absolute right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20" onClick={(e) => { e.stopPropagation(); next(); }}>
             <ChevronRight size={22} />
