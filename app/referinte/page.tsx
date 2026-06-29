@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { X, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useLang } from "@/lib/LanguageContext";
 
 type GalleryCategory = "windows" | "doors" | "complex";
@@ -49,12 +49,8 @@ const galleryItems: { src: string; category: GalleryCategory }[] = [
 export default function ReferintePage() {
   const { lang, tr } = useLang();
   const [selected, setSelected] = useState<GalleryCategory | null>(null);
-  const [lightbox, setLightbox] = useState<number | null>(null);
 
   const filtered = selected ? galleryItems.filter((g) => g.category === selected) : [];
-
-  const prev = () => setLightbox((l) => (l !== null ? (l - 1 + filtered.length) % filtered.length : null));
-  const next = () => setLightbox((l) => (l !== null ? (l + 1) % filtered.length : null));
 
   const catLabel = (key: GalleryCategory) =>
     lang === "ro"
@@ -110,7 +106,7 @@ export default function ReferintePage() {
           <>
             {/* Back button */}
             <button
-              onClick={() => { setSelected(null); setLightbox(null); }}
+              onClick={() => setSelected(null)}
               className="inline-flex items-center gap-2 text-sm font-medium mb-8 hover:underline"
               style={{ color: "var(--clr-accent)" }}
             >
@@ -123,24 +119,15 @@ export default function ReferintePage() {
             {/* Masonry grid */}
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
               {filtered.map((item, i) => (
-                <div
-                  key={i}
-                  className="break-inside-avoid relative overflow-hidden rounded-2xl cursor-pointer group"
-                  onClick={() => setLightbox(i)}
-                >
+                <div key={i} className="break-inside-avoid relative overflow-hidden rounded-2xl">
                   <Image
                     src={item.src}
                     alt={catLabel(selected)}
                     width={600}
                     height={450}
-                    className="w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full object-cover"
                     unoptimized
                   />
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-3 py-2 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <span className="text-white text-xs font-semibold">
-                      {lang === "ro" ? "Mărește" : "Nagyítás"}
-                    </span>
-                  </div>
                 </div>
               ))}
             </div>
@@ -148,34 +135,6 @@ export default function ReferintePage() {
         )}
       </div>
 
-      {/* Lightbox */}
-      {lightbox !== null && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center" onClick={() => setLightbox(null)}>
-          <button className="absolute top-4 right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20" onClick={() => setLightbox(null)}>
-            <X size={20} />
-          </button>
-          <button className="absolute left-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20" onClick={(e) => { e.stopPropagation(); prev(); }}>
-            <ChevronLeft size={22} />
-          </button>
-          <div className="relative max-w-4xl max-h-[85vh] mx-16 flex flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>
-            <Image
-              src={filtered[lightbox].src.replace(/w=600/, "w=1200").replace(/h=\d+/, "h=800")}
-              alt="Gallery"
-              width={1200}
-              height={800}
-              className="object-contain max-h-[78vh] rounded-xl"
-              unoptimized
-            />
-            <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white text-sm backdrop-blur-sm">
-              {selected && catLabel(selected)}
-              <span className="text-white/40 ml-2">{lightbox + 1} / {filtered.length}</span>
-            </div>
-          </div>
-          <button className="absolute right-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20" onClick={(e) => { e.stopPropagation(); next(); }}>
-            <ChevronRight size={22} />
-          </button>
-        </div>
-      )}
     </div>
   );
 }
