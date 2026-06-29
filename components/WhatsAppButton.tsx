@@ -1,103 +1,33 @@
 "use client";
 
-import { useState } from "react";
-import { X, Send } from "lucide-react";
 import { useLang } from "@/lib/LanguageContext";
 
-const PHONE = "40700000000"; // placeholder — 40 = Romania country code
+const PHONE = "40700000000";
 
 const TEXTS = {
   ro: {
     fab: "Contactează-ne acum!",
-    bubble: "Bună ziua!",
-    subtitle: "Suntem disponibili pentru întrebări.",
-    placeholder: "Scrieți un mesaj...",
     default_msg: "Bună ziua! Aș dori să aflu mai multe despre produsele dumneavoastră.",
-    send: "Deschide WhatsApp",
-    online: "Online",
-    name: "FerestrăPro",
   },
   hu: {
     fab: "Lépjen kapcsolatba velünk!",
-    bubble: "Jó napot!",
-    subtitle: "Örömmel válaszolunk kérdéseire.",
-    placeholder: "Írjon üzenetet...",
     default_msg: "Jó napot! Szeretnék többet megtudni a termékeikről.",
-    send: "WhatsApp megnyitása",
-    online: "Elérhető",
-    name: "FerestrăPro",
   },
 };
 
 export default function WhatsAppButton() {
   const { lang } = useLang();
-  const [open, setOpen] = useState(false);
-  const [msg, setMsg] = useState("");
   const tx = TEXTS[lang];
 
-  const openChat = () => {
-    const text = encodeURIComponent(msg.trim() || tx.default_msg);
+  const openWhatsApp = () => {
+    const text = encodeURIComponent(tx.default_msg);
     window.open(`https://wa.me/${PHONE}?text=${text}`, "_blank");
   };
 
   return (
-    <div className="fixed bottom-24 right-5 z-50 flex flex-col items-end gap-3">
-      {open && (
-        <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 w-72 overflow-hidden">
-          {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3" style={{ background: "#25D366" }}>
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-sm">
-                FP
-              </div>
-              <div>
-                <p className="text-white font-semibold text-sm leading-none">{tx.name}</p>
-                <p className="text-green-100 text-xs mt-0.5">● {tx.online}</p>
-              </div>
-            </div>
-            <button onClick={() => setOpen(false)} className="text-white/80 hover:text-white">
-              <X size={16} />
-            </button>
-          </div>
-
-          {/* Chat bubble */}
-          <div className="p-4" style={{ background: "#ECE5DD" }}>
-            <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[85%]">
-              <p className="text-sm font-semibold text-gray-800">{tx.bubble}</p>
-              <p className="text-xs text-gray-500 mt-1 leading-relaxed">{tx.subtitle}</p>
-              <p className="text-xs text-gray-400 mt-2 text-right">
-                {new Date().toLocaleTimeString(lang === "ro" ? "ro-RO" : "hu-HU", { hour: "2-digit", minute: "2-digit" })}
-              </p>
-            </div>
-          </div>
-
-          {/* Input */}
-          <div className="p-3 border-t border-gray-100 flex gap-2">
-            <input
-              type="text"
-              value={msg}
-              onChange={(e) => setMsg(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && openChat()}
-              placeholder={tx.placeholder}
-              className="flex-1 text-sm px-3 py-2 rounded-xl border border-gray-200 outline-none focus:border-green-400 transition-colors"
-            />
-            <button
-              onClick={openChat}
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-white shrink-0 transition-opacity hover:opacity-90"
-              style={{ background: "#25D366" }}
-            >
-              <Send size={15} />
-            </button>
-          </div>
-          <p className="text-center text-xs text-gray-400 pb-3">
-            {tx.send}
-          </p>
-        </div>
-      )}
-
-      {/* FAB button */}
+    <div className="fixed bottom-24 right-5 z-50">
       <button
-        onClick={() => setOpen(!open)}
+        onClick={openWhatsApp}
         className="flex items-center gap-2.5 px-4 py-3 rounded-full shadow-lg text-white font-semibold text-sm transition-opacity hover:opacity-90"
         style={{ background: "#25D366" }}
         aria-label="WhatsApp"
