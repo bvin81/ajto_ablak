@@ -82,10 +82,6 @@ function ProductCarousel({ lang }: { lang: string }) {
         ))}
       </div>
 
-      {/* Mobile hint */}
-      <p className="md:hidden text-center text-xs text-gray-400 mt-2">
-        {lang === "ro" ? "← Glisați pentru mai multe →" : "← Húzzon a további termékekért →"}
-      </p>
     </div>
   );
 }
