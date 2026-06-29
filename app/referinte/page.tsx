@@ -92,22 +92,12 @@ export default function ReferintePage() {
                 className="w-full object-cover group-hover:scale-105 transition-transform duration-300"
                 unoptimized
               />
-              {/* Dark gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-
-              {/* Category badge — top left */}
-              <div
-                className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-sm"
-                style={{ background: "var(--clr-accent)", opacity: 0.92 }}
-              >
-                {categoryLabel(item.category as Exclude<GalleryCategory, "all">)}
-              </div>
-
-              {/* Zoom hint — center on hover */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-xl">
-                  +
-                </div>
+              {/* Bottom bar with label */}
+              <div className="absolute bottom-0 left-0 right-0 bg-black/65 px-3 py-2 flex items-center justify-between">
+                <span className="text-white text-xs font-semibold tracking-wide">
+                  {categoryLabel(item.category as Exclude<GalleryCategory, "all">)}
+                </span>
+                <span className="text-white/60 text-lg leading-none opacity-0 group-hover:opacity-100 transition-opacity">+</span>
               </div>
             </div>
           ))}
