@@ -18,7 +18,7 @@ const TEXTS = {
     name: "FerestrăPro",
   },
   hu: {
-    fab: "Írjon nekünk most!",
+    fab: "Lépjen kapcsolatba velünk!",
     bubble: "Jó napot!",
     subtitle: "Örömmel válaszolunk kérdéseire.",
     placeholder: "Írjon üzenetet...",
