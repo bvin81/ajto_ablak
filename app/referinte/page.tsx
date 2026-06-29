@@ -18,7 +18,7 @@ const galleryItems = [
   { src: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=600&h=400&fit=crop", category: "complex" as GalleryCategory },
   { src: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&h=500&fit=crop", category: "windows" as GalleryCategory },
   { src: "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=600&h=450&fit=crop", category: "doors" as GalleryCategory },
-  { src: "https://images.unsplash.com/photo-1531390658687-6eba4bf70cc0?w=600&h=400&fit=crop", category: "complex" as GalleryCategory },
+  { src: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&h=400&fit=crop", category: "complex" as GalleryCategory },
   { src: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&h=500&fit=crop", category: "complex" as GalleryCategory },
 ];
 

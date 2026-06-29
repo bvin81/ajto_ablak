@@ -9,7 +9,7 @@ const PRODUCT_IMAGES = [
   "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
   "https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?w=400&h=300&fit=crop",
   "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1531390658687-6eba4bf70cc0?w=400&h=300&fit=crop",
+  "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=400&h=300&fit=crop",
 ];
 
 const GALLERY_IMAGES = [
