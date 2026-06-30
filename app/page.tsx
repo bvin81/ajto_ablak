@@ -2,20 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, CheckCircle2, Star, Ruler, Shield, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, CheckCircle2, Star, Ruler, Shield } from "lucide-react";
 import { useLang } from "@/lib/LanguageContext";
-import { useRef } from "react";
-
-const ALL_PRODUCTS = [
-  { image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=380&fit=crop", nameRo: "Ferestre PVC", nameHu: "PVC ablakok", href: "/produse?filter=windows" },
-  { image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=500&h=380&fit=crop", nameRo: "Ferestre aluminiu", nameHu: "Alumínium ablakok", href: "/produse?filter=windows" },
-  { image: "https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?w=500&h=380&fit=crop", nameRo: "Uși de intrare", nameHu: "Bejárati ajtók", href: "/produse?filter=doors" },
-  { image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=500&h=380&fit=crop", nameRo: "Uși interioare", nameHu: "Belső ajtók", href: "/produse?filter=doors" },
-  { image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&h=380&fit=crop", nameRo: "Rulouri exterioare", nameHu: "Kültéri redőnyök", href: "/produse?filter=shutters" },
-  { image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=500&h=380&fit=crop", nameRo: "Jaluzele & Umbrire", nameHu: "Zsaluziák & Árnyékolók", href: "/produse?filter=shutters" },
-  { image: "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=500&h=380&fit=crop", nameRo: "Plase insecte", nameHu: "Szúnyoghálók", href: "/produse?filter=mosquito" },
-  { image: "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=500&h=380&fit=crop", nameRo: "Accesorii & Piese schimb", nameHu: "Kiegészítők & Alkatrészek", href: "/produse?filter=mosquito" },
-];
 
 const GALLERY_IMAGES = [
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=400&fit=crop",
@@ -24,67 +12,6 @@ const GALLERY_IMAGES = [
 ];
 
 const USP_ICONS = [CheckCircle2, Shield, Star, Ruler];
-
-function ProductCarousel({ lang }: { lang: string }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (dir: "prev" | "next") => {
-    if (!trackRef.current) return;
-    const card = trackRef.current.querySelector("[data-card]") as HTMLElement;
-    const amount = card ? card.offsetWidth + 16 : 280;
-    trackRef.current.scrollBy({ left: dir === "next" ? amount : -amount, behavior: "smooth" });
-  };
-
-  return (
-    <div className="relative">
-      {/* Desktop arrows */}
-      <button
-        onClick={() => scroll("prev")}
-        className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-md border border-gray-100 items-center justify-center text-gray-600 hover:text-gray-900 transition-colors z-10"
-      >
-        <ChevronLeft size={18} />
-      </button>
-      <button
-        onClick={() => scroll("next")}
-        className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 w-9 h-9 bg-white rounded-full shadow-md border border-gray-100 items-center justify-center text-gray-600 hover:text-gray-900 transition-colors z-10"
-      >
-        <ChevronRight size={18} />
-      </button>
-
-      {/* Scroll track */}
-      <div
-        ref={trackRef}
-        className="flex gap-4 overflow-x-auto pb-3"
-        style={{ scrollSnapType: "x mandatory", scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {ALL_PRODUCTS.map((p, i) => (
-          <Link
-            key={i}
-            data-card
-            href={p.href}
-            className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden shrink-0 flex flex-col"
-            style={{ scrollSnapAlign: "start", width: "clamp(220px, 72vw, 280px)" }}
-          >
-            <div className="relative overflow-hidden" style={{ height: 180 }}>
-              <Image
-                src={p.image}
-                alt={lang === "ro" ? p.nameRo : p.nameHu}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                unoptimized
-              />
-            </div>
-            <div className="p-4 flex items-center justify-between flex-1">
-              <h3 className="font-semibold text-gray-900 text-sm leading-snug">{lang === "ro" ? p.nameRo : p.nameHu}</h3>
-              <ArrowRight size={14} style={{ color: "var(--clr-accent)" }} className="shrink-0 ml-3" />
-            </div>
-          </Link>
-        ))}
-      </div>
-
-    </div>
-  );
-}
 
 export default function Home() {
   const { lang, tr } = useLang();
@@ -128,26 +55,6 @@ export default function Home() {
                 {tr.hero.cta_secondary}
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Products carousel */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-8">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-10">
-            {tr.products_preview.title}
-          </h2>
-          <ProductCarousel lang={lang} />
-          <div className="text-center mt-8">
-            <Link
-              href="/produse"
-              className="inline-flex items-center gap-2 text-sm font-semibold hover:underline"
-              style={{ color: "var(--clr-accent)" }}
-            >
-              {lang === "ro" ? "Vezi toate produsele" : "Összes termék megtekintése"}
-              <ArrowRight size={15} />
-            </Link>
           </div>
         </div>
       </section>
