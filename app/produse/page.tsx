@@ -84,10 +84,7 @@ function ProduceContent() {
                 <Image src={p.image} alt={lang === "ro" ? p.nameRo : p.nameHu} fill className="object-cover hover:scale-105 transition-transform duration-300" unoptimized />
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1 text-sm">{lang === "ro" ? p.nameRo : p.nameHu}</h3>
-                <button className="text-sm font-medium mt-2 hover:underline" style={{ color: "var(--clr-accent)" }}>
-                  {tr.products_page.details_btn} →
-                </button>
+                <h3 className="font-semibold text-gray-900 text-sm">{lang === "ro" ? p.nameRo : p.nameHu}</h3>
               </div>
             </div>
           ))}
