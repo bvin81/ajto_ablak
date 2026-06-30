@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { X } from "lucide-react";
 import { useLang } from "@/lib/LanguageContext";
 
@@ -18,10 +19,18 @@ const products = [
   { category: "mosquito" as Category, image: "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=500&h=400&fit=crop", detail: "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=800&h=600&fit=crop", nameRo: "Accesorii & Piese schimb", nameHu: "Kiegészítők & Alkatrészek", detailsRo: "Accesorii și piese de schimb: mânere, balamale, garnituri. Service și înlocuire rapidă.", detailsHu: "Kiegészítők és cserealkatrészek: kilincsek, zsanérok, tömítések. Gyors szerviz és csere." },
 ];
 
-export default function ProducePage() {
+function ProduceContent() {
   const { lang, tr } = useLang();
+  const searchParams = useSearchParams();
   const [filter, setFilter] = useState<Category>("all");
   const [selected, setSelected] = useState<(typeof products)[0] | null>(null);
+
+  useEffect(() => {
+    const param = searchParams.get("filter") as Category | null;
+    if (param && ["windows", "doors", "shutters", "mosquito"].includes(param)) {
+      setFilter(param);
+    }
+  }, [searchParams]);
 
   const filtered = filter === "all" ? products : products.filter((p) => p.category === filter);
 
@@ -110,5 +119,13 @@ export default function ProducePage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ProducePage() {
+  return (
+    <Suspense>
+      <ProduceContent />
+    </Suspense>
   );
 }

@@ -7,14 +7,14 @@ import { useLang } from "@/lib/LanguageContext";
 import { useRef } from "react";
 
 const ALL_PRODUCTS = [
-  { image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=380&fit=crop", nameRo: "Ferestre PVC", nameHu: "PVC ablakok", href: "/produse" },
-  { image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=500&h=380&fit=crop", nameRo: "Ferestre aluminiu", nameHu: "Alumínium ablakok", href: "/produse" },
-  { image: "https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?w=500&h=380&fit=crop", nameRo: "Uși de intrare", nameHu: "Bejárati ajtók", href: "/produse" },
-  { image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=500&h=380&fit=crop", nameRo: "Uși interioare", nameHu: "Belső ajtók", href: "/produse" },
-  { image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&h=380&fit=crop", nameRo: "Rulouri exterioare", nameHu: "Kültéri redőnyök", href: "/produse" },
-  { image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=500&h=380&fit=crop", nameRo: "Jaluzele & Umbrire", nameHu: "Zsaluziák & Árnyékolók", href: "/produse" },
-  { image: "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=500&h=380&fit=crop", nameRo: "Plase insecte", nameHu: "Szúnyoghálók", href: "/produse" },
-  { image: "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=500&h=380&fit=crop", nameRo: "Accesorii & Piese schimb", nameHu: "Kiegészítők & Alkatrészek", href: "/produse" },
+  { image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=380&fit=crop", nameRo: "Ferestre PVC", nameHu: "PVC ablakok", href: "/produse?filter=windows" },
+  { image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=500&h=380&fit=crop", nameRo: "Ferestre aluminiu", nameHu: "Alumínium ablakok", href: "/produse?filter=windows" },
+  { image: "https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?w=500&h=380&fit=crop", nameRo: "Uși de intrare", nameHu: "Bejárati ajtók", href: "/produse?filter=doors" },
+  { image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=500&h=380&fit=crop", nameRo: "Uși interioare", nameHu: "Belső ajtók", href: "/produse?filter=doors" },
+  { image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&h=380&fit=crop", nameRo: "Rulouri exterioare", nameHu: "Kültéri redőnyök", href: "/produse?filter=shutters" },
+  { image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=500&h=380&fit=crop", nameRo: "Jaluzele & Umbrire", nameHu: "Zsaluziák & Árnyékolók", href: "/produse?filter=shutters" },
+  { image: "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=500&h=380&fit=crop", nameRo: "Plase insecte", nameHu: "Szúnyoghálók", href: "/produse?filter=mosquito" },
+  { image: "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=500&h=380&fit=crop", nameRo: "Accesorii & Piese schimb", nameHu: "Kiegészítők & Alkatrészek", href: "/produse?filter=mosquito" },
 ];
 
 const GALLERY_IMAGES = [
