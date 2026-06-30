@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube } from "lucide-react";
 import { useLang } from "@/lib/LanguageContext";
 
 export default function Footer() {
@@ -31,7 +31,25 @@ export default function Footer() {
               </div>
               <span className="font-bold text-lg text-white">FerestrăPro</span>
             </div>
-            <p className="text-sm leading-relaxed text-gray-400">{tr.footer.desc}</p>
+            <p className="text-sm leading-relaxed text-gray-400 mb-4">{tr.footer.desc}</p>
+            <div className="flex gap-3">
+              {[
+                { icon: Facebook, href: "#" },
+                { icon: Instagram, href: "#" },
+                { icon: Youtube, href: "#" },
+              ].map(({ icon: Icon, href }, i) => (
+                <a
+                  key={i}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-colors"
+                  style={{ background: "rgba(255,255,255,0.07)" }}
+                >
+                  <Icon size={17} />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Links */}
